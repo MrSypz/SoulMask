@@ -4,9 +4,11 @@
   "version": "${version}",
   "name": "Soul Mask",
   "description": "",
-  "authors": [],
+  "authors": [
+    "MySypztep"
+  ],
   "contact": {
-    "repo": "https://github.com/MrSoul Maskypz/Mamy-Fabric2"
+    "repo": "https://github.com/MrSypz/SoulMask"
   },
   "license": "MIT",
   "icon": "assets/soulmask/icon.png",
@@ -17,6 +19,9 @@
     ],
     "main": [
       "sypztep.mamy.soulmask.common.SoulMaskMod"
+    ],
+    "cardinal-components-entity": [
+      "sypztep.mamy.soulmask.common.init.ModEntityComponents"
     ]
   },
   "mixins": [
@@ -26,5 +31,10 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "cardinal-components": [
+      "soulmask:vizard"
+    ]
   }
 }
