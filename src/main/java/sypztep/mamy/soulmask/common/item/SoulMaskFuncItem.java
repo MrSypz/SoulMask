@@ -50,6 +50,6 @@ public class SoulMaskFuncItem extends ArmorItem implements GeoItem{
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache ;
+        return this.cache;
     }
 }
