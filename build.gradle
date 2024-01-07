@@ -7,6 +7,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+    mavenCentral()
     //CCA
     maven {
         name = 'Ladysnake Mods'
@@ -41,6 +42,8 @@ dependencies {
     modRuntimeOnly "maven.modrinth:sodium:${sodium_version}"
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
+
+    modImplementation "com.ptsmods:devlogin:3.3"
 }
 
 processResources {

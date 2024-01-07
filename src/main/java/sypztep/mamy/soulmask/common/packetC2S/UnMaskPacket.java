@@ -12,8 +12,8 @@ import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
-public class MaskPacket {
-    public static final Identifier ID = SoulMaskMod.id("mask");
+public class UnMaskPacket {
+    public static final Identifier ID = SoulMaskMod.id("unmask");
     public static void send() {
         ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
     }
@@ -21,7 +21,7 @@ public class MaskPacket {
     public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-            SoulMaskUtil.checkHelmet(player);
+            SoulMaskUtil.unequipMask(player);
         }
     }
 }
