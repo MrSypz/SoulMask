@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "soulmask",
+  "version": "${version}",
+  "name": "Soul Mask",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/MrSoul Maskypz/Mamy-Fabric2"
+  },
+  "license": "MIT",
+  "icon": "assets/soulmask/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "sypztep.mamy.soulmask.client.SoulMaskModClient"
+    ],
+    "main": [
+      "sypztep.mamy.soulmask.common.SoulMaskMod"
+    ]
+  },
+  "mixins": [
+    "soulmask.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
