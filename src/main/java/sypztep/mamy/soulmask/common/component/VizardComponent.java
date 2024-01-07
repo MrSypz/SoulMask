@@ -53,4 +53,7 @@ public class VizardComponent implements AutoSyncedComponent {
         getHogyoku(player).incHogyoku();
         ModEntityComponents.VIZARD.sync(player);
     }
+    public boolean canUseMask2(PlayerEntity player) {
+        return getHogyokuValue(player) > 0;
+    }
 }
