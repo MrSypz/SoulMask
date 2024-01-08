@@ -43,7 +43,7 @@ dependencies {
 
     modRuntimeOnly "com.terraformersmc:modmenu:${mod_menu_version}"
 
-    modImplementation "com.ptsmods:devlogin:3.3"
+    modImplementation "com.ptsmods:devlogin:3.5"
 }
 
 processResources {
