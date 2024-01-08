@@ -45,8 +45,6 @@ public class SoulMaskUtil {
     public static void unequipMask(PlayerEntity user) {
         user.equipStack(EquipmentSlot.HEAD,ItemStack.EMPTY);
     }
-
-
     public static void equipMask(PlayerEntity user) {
         int getrank = VizardComponent.getHogyokuValue(user);
         ItemStack Hollowmask = getItemStack(getrank);
