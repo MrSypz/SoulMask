@@ -4,17 +4,16 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import sypztep.mamy.soulmask.client.SoulMaskModClient;
+import sypztep.mamy.soulmask.client.event.MaskHandleTick;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.init.ModEntityComponents;
-import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
-import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
+import sypztep.mamy.soulmask.common.packetC2S.MaskEquipCDPacket;
 
-import static sypztep.mamy.soulmask.client.SoulMaskModClient.EQUIPMASK_KEYBINDING;
-
-public class VizardComponent implements AutoSyncedComponent {
+public class VizardComponent implements AutoSyncedComponent, CommonTickingComponent {
     private final PlayerEntity obj;
-    private int hogyoku = 0;
+    private final int DEFAULT_DELAY = 600;
+    private int hogyoku = 0, delayUsemask = DEFAULT_DELAY;
+    private boolean wasEquipMask = false;
 
     public VizardComponent(PlayerEntity obj) {
         this.obj = obj;
@@ -23,18 +22,22 @@ public class VizardComponent implements AutoSyncedComponent {
     @Override
     public void readFromNbt(NbtCompound tag) {
         this.hogyoku = tag.getInt("hogyoku");
+        this.delayUsemask = tag.getInt("delayusemask");
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
         tag.putInt("hogyoku",this.hogyoku);
+        tag.putInt("delayusemask",this.delayUsemask);
     }
     private int getHogyoku() {
         return this.hogyoku;
     }
-    private void incHogyoku() {
-        this.hogyoku += 1;
-    }
+
+//    private void incHogyoku() {
+//        this.hogyoku += 1;
+//    }
+
     /**
      this method is just simpify to use aka short from
      */
@@ -48,12 +51,45 @@ public class VizardComponent implements AutoSyncedComponent {
     public static boolean canUseMask(PlayerEntity player) {
         return getHogyokuValue(player) > 0;
     }
+
+    public boolean isWasEquipMask() {
+        return wasEquipMask;
+    }
+    public static boolean WasEquipMask(PlayerEntity player) {
+        return getHogyoku(player).isWasEquipMask();
+    }
+
     //Packet Hogyoku
     public static void incHogyoku(PlayerEntity player) {
-        getHogyoku(player).incHogyoku();
+        getHogyoku(player).hogyoku += 1;
         ModEntityComponents.VIZARD.sync(player);
     }
-    public boolean canUseMask2(PlayerEntity player) {
-        return getHogyokuValue(player) > 0;
+
+    public int getDelayUsemask() {
+        return delayUsemask;
+    }
+
+    @Override
+    public void clientTick() {
+        wasEquipMask = MaskHandleTick.isWasUnEquipMask();
+        tick();
+        if (wasEquipMask) {
+            handle(this);
+            MaskEquipCDPacket.send();
+        } else delayUsemask = DEFAULT_DELAY;
+    }
+
+    @Override
+    public void tick() {
+        SoulMaskMod.LOGGER.info(String.valueOf(delayUsemask));
+        SoulMaskMod.LOGGER.info(String.valueOf(wasEquipMask));
+    }
+    public static void handle(VizardComponent component) {
+        if (component.delayUsemask > 0) {
+            component.delayUsemask--;
+            if (component.delayUsemask == 0)
+                MaskHandleTick.setWasUnEquipMask(false);
+        }
+        else component.delayUsemask = component.DEFAULT_DELAY;
     }
 }
