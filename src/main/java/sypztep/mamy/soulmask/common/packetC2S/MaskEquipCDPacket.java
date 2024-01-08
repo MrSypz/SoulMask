@@ -12,7 +12,6 @@ import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.init.ModEntityComponents;
-import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
 public class MaskEquipCDPacket {
     public static final Identifier ID = SoulMaskMod.id("maskequipcd");

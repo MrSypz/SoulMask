@@ -3,7 +3,6 @@ package sypztep.mamy.soulmask.common.util;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EmptyMapItem;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
