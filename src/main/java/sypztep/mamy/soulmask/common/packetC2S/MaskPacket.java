@@ -14,14 +14,22 @@ import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
 public class MaskPacket {
     public static final Identifier ID = SoulMaskMod.id("mask");
-    public static void send() {
-        ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
+    public static void send(int select) {
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeInt(select);
+        ClientPlayNetworking.send(ID, buf);
     }
 //
     public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-            SoulMaskUtil.checkHelmet(player);
+            int select = buf.readInt();
+            switch (select) {
+                case 1: SoulMaskUtil.checkHelmet(player);
+                break;
+                case 2: SoulMaskUtil.unequipMask(player);
+                break;
+            }
         }
     }
 }
