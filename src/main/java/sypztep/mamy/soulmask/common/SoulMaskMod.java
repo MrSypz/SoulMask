@@ -5,11 +5,10 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sypztep.mamy.soulmask.common.init.ModEntityComponents;
 import sypztep.mamy.soulmask.common.init.ModItems;
 import sypztep.mamy.soulmask.common.packetC2S.HogyokuPacket;
+import sypztep.mamy.soulmask.common.packetC2S.MaskEquipCDPacket;
 import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
-import sypztep.mamy.soulmask.common.packetC2S.UnMaskPacket;
 
 public class SoulMaskMod implements ModInitializer {
     public static final String MODID = "soulmask";
@@ -20,7 +19,7 @@ public class SoulMaskMod implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerPlayNetworking.registerGlobalReceiver(MaskPacket.ID, new MaskPacket.Receiver());
-        ServerPlayNetworking.registerGlobalReceiver(UnMaskPacket.ID, new UnMaskPacket.Receiver());
+        ServerPlayNetworking.registerGlobalReceiver(MaskEquipCDPacket.ID, new MaskEquipCDPacket.Receiver());
         ServerPlayNetworking.registerGlobalReceiver(HogyokuPacket.ID, new HogyokuPacket.Receiver());
 
         ModItems.init();
