@@ -10,10 +10,12 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
+import sypztep.mamy.soulmask.common.component.VizardComponent;
+import sypztep.mamy.soulmask.common.init.ModEntityComponents;
 import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
-public class UnMaskPacket {
-    public static final Identifier ID = SoulMaskMod.id("unmask");
+public class MaskEquipCDPacket {
+    public static final Identifier ID = SoulMaskMod.id("maskequipcd");
     public static void send() {
         ClientPlayNetworking.send(ID, new PacketByteBuf(Unpooled.buffer()));
     }
@@ -21,7 +23,10 @@ public class UnMaskPacket {
     public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-            SoulMaskUtil.unequipMask(player);
+            server.execute(() -> ModEntityComponents.VIZARD.maybeGet(player).ifPresent(vizardComponent -> {
+                if (vizardComponent.isWasEquipMask())
+                    VizardComponent.handle(vizardComponent);
+            }));
         }
     }
 }
