@@ -25,7 +25,7 @@ public class HogyokuItem extends Item {
                 HogyokuPacket.send();
             return TypedActionResult.fail(stack);
         }
-        if (rank <= 5) {
+        if (rank < 5) {
             user.sendMessage(Text.translatable("soulmask.hogyoku.success").formatted(Formatting.GOLD), true);
             return TypedActionResult.success(stack);
         }

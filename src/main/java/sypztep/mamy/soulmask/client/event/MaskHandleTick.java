@@ -2,27 +2,31 @@ package sypztep.mamy.soulmask.client.event;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import sypztep.mamy.soulmask.client.SoulMaskModClient;
+import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
 import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
 public class MaskHandleTick {
     private static final int DEFAULT_COOLDOWN = 20;
-    private static int equipmaskcd = DEFAULT_COOLDOWN, unmaskcd = DEFAULT_COOLDOWN;
-    private static boolean wasUnEquipMask = false;
+    private static int equipmaskcd = DEFAULT_COOLDOWN, unmaskcd = DEFAULT_COOLDOWN,presscd = 10;
+    private static boolean wasUnEquipMask = false, hasEquippedMask = false;
 
     public static void init () {
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
             if (minecraft.player != null) {
-                if (!SoulMaskUtil.hasEquippedMask(minecraft.player) && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && VizardComponent.canUseMask(minecraft.player) && !VizardComponent.WasEquipMask(minecraft.player)) {
+                hasEquippedMask = SoulMaskUtil.hasEquippedMask(minecraft.player);
+                if (!hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && VizardComponent.canUseMask(minecraft.player) && !VizardComponent.WasEquipMask(minecraft.player) && presscd <= 0) {
                     equipmaskcd--;
                     if (equipmaskcd <= 0) {
+                        presscd = 10;
                         MaskPacket.send(1);
                         equipmaskcd = DEFAULT_COOLDOWN;
                     }
-                } else if (SoulMaskUtil.hasEquippedMask(minecraft.player) && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed()) {
+                } else if (hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && presscd <= 0) {
                     unmaskcd--;
                     if (unmaskcd <= 0) {
+                        presscd = 10;
                         MaskPacket.send(2);
                         wasUnEquipMask = true;
                         unmaskcd = DEFAULT_COOLDOWN;
@@ -31,10 +35,14 @@ public class MaskHandleTick {
                     unmaskcd = DEFAULT_COOLDOWN;
                     equipmaskcd = DEFAULT_COOLDOWN;
                 }
+                if (presscd > 0)
+                    presscd--;
             }
         });
     }
-
+    /**
+     * Render UI part
+     */
     public static int getEquipmaskcd() {
         return equipmaskcd;
     }
@@ -48,8 +56,16 @@ public class MaskHandleTick {
         return DEFAULT_COOLDOWN;
     }
 
-    public static boolean isWasUnEquipMask() {
+    /**
+     * End Render UI part
+     */
+
+    public static boolean WasUnEquipMask() {
         return wasUnEquipMask;
+    }
+
+    public static boolean HasEquippedMask() {
+        return hasEquippedMask;
     }
 
     public static void setWasUnEquipMask(boolean wasUnEquipMask) {
