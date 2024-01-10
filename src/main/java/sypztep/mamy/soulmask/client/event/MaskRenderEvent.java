@@ -13,6 +13,7 @@ import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
 
 public class MaskRenderEvent implements HudRenderCallback {
     private static final Identifier EQUIPMASKCD_TEXTURE = SoulMaskMod.id("textures/gui/mask.png");
+    private static final Identifier MASKCD_TEXTURE = SoulMaskMod.id("textures/gui/cd.png");
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
         ModEntityComponents.VIZARD.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(vizardComponent -> {
@@ -32,19 +33,23 @@ public class MaskRenderEvent implements HudRenderCallback {
                     RenderSystem.disableBlend();
                 }
             }
+            drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, "Max Soul : " + vizardComponent.getMaxsoulEnergy(),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18,16777215,0,false);
+            drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, "Soul : " + vizardComponent.getSoulEnergy(),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 36,16777215,0,false);
+
             if (vizardComponent.isWasEquipMask()) {
                 RenderSystem.enableBlend();
-                drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, String.valueOf(vizardComponent.getDelayUsemask()),drawContext.getScaledWindowWidth() / 2,drawContext.getScaledWindowHeight() / 3,16777215,0,false);
-                drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, String.valueOf(vizardComponent.isWasEquipMask()),drawContext.getScaledWindowWidth() / 2, 10 + drawContext.getScaledWindowHeight() / 3,16777215,0,false);
+                drawContext.drawTexture(MASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 9F) - 25, (int) (drawContext.getScaledWindowHeight() / 2F) + 80, 0, 0, 18, 18, 18, 36);
+                if (vizardComponent.getDelayUsemask() < vizardComponent.getLastDelayUsemask())
+                    drawContext.drawTexture(MASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 9F) - 25, (int) (drawContext.getScaledWindowHeight() / 2F) + 80, 0, 18, 18, (int) (19-(vizardComponent.getDelayUsemask() / (float) vizardComponent.getLastDelayUsemask()) * 18), 18, 36);
                 RenderSystem.disableBlend();
             }
         });
     }
     public static void drawtextcustom(DrawContext context, TextRenderer textRenderer,String text,int x,int y ,int color,int board, boolean shadow){
-        context.drawText(textRenderer,text,x + 1,y,board,false);
-        context.drawText(textRenderer,text,x - 1,y,board,false);
-        context.drawText(textRenderer,text,x ,y + 1,board,false);
-        context.drawText(textRenderer,text,x ,y - 1,board,false);
-        context.drawText(textRenderer,text,x,y,color,false);
+        context.drawText(textRenderer,text,x + 1,y,board,shadow);
+        context.drawText(textRenderer,text,x - 1,y,board,shadow);
+        context.drawText(textRenderer,text,x ,y + 1,board,shadow);
+        context.drawText(textRenderer,text,x ,y - 1,board,shadow);
+        context.drawText(textRenderer,text,x,y,color,shadow);
     }
 }
