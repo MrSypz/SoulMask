@@ -33,6 +33,7 @@ public class MaskRenderEvent implements HudRenderCallback {
                     RenderSystem.disableBlend();
                 }
             }
+            //TODO: แก้ให้เป็น UI ไม่ใช่ TEXT
             drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, "Max Soul : " + vizardComponent.getMaxsoulEnergy(),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18,16777215,0,false);
             drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, "Soul : " + vizardComponent.getSoulEnergy(),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 36,16777215,0,false);
 
