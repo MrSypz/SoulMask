@@ -22,7 +22,7 @@ public class HogyokuPacket {
     public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-                VizardComponent.incHogyoku(player);
+            VizardComponent.incHogyoku(player);
         }
     }
 }

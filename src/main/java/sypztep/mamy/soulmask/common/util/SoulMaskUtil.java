@@ -1,12 +1,15 @@
 package sypztep.mamy.soulmask.common.util;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import org.jetbrains.annotations.NotNull;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.init.ModItems;
+import sypztep.mamy.soulmask.common.init.ModParticles;
 import sypztep.mamy.soulmask.common.item.HollowmaskItem;
 
 public class SoulMaskUtil {
@@ -45,15 +48,23 @@ public class SoulMaskUtil {
         user.equipStack(EquipmentSlot.HEAD,ItemStack.EMPTY);
     }
     public static void equipMask(PlayerEntity user) {
+        if (user.getWorld().isClient()) {
+            addUseMaskParticle(user);
+            return;
+        }
         int getrank = VizardComponent.getHogyokuValue(user);
         ItemStack Hollowmask = getItemStack(getrank);
             //TODO: Add Feature to take off and HOLLOW CURSE ENCHANTMENT And add cool effect like red pillar from sky
 //        Hollowmask.addEnchantment(ModEnchantments.HOLLOW_CURSE, 1);
-            user.equipStack(EquipmentSlot.HEAD, Hollowmask);
+        user.equipStack(EquipmentSlot.HEAD, Hollowmask);
 //        user.damage(user.getWorld().getDamageSources().create(ModDamageTypes.MASKIMPACT, user), user.getHealth() * 0.5f);
 //        OrbitalEntity orbitalEntity = new OrbitalEntity(user.getWorld(),user);
 //        if (baseValue > 4)
 //            user.getWorld().spawnEntity(orbitalEntity);
+    }
+    public static void addUseMaskParticle(PlayerEntity player) { //Client Packet
+        if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || player != MinecraftClient.getInstance().cameraEntity)
+            player.getWorld().addParticle(ModParticles.SHOCKWAVE, player.getX(), player.getY(), player.getZ(), 0.0, 0.0, 0.0);
     }
     @NotNull
     private static ItemStack getItemStack(int baseValue) {
