@@ -14,8 +14,8 @@ import net.minecraft.particle.DefaultParticleType;
 public class BloodwaveParticle extends ShockwaveParticle {
     BloodwaveParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, double velocityX, double velocityY, double velocityZ) {
         super(world, x, y, z, spriteProvider, velocityX, velocityY, velocityZ);
-        this.maxAge = 8;
-        this.scale = 3.75F;
+//        this.maxAge = 10;
+        this.scale = 6.75F;
         this.gravityStrength = 0.0F;
         this.setVelocity(0D, 0D, 0D);
         this.setSpriteForAge(spriteProvider);

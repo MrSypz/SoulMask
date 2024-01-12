@@ -11,6 +11,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import sypztep.mamy.soulmask.common.init.ModItems;
+import sypztep.mamy.soulmask.common.init.ModSoundEvents;
 
 public class HollowmaskItem extends SoulMaskFuncItem {
 
@@ -20,15 +21,11 @@ public class HollowmaskItem extends SoulMaskFuncItem {
 
     @Override
     public SoundEvent getEquipSound() {
-        return SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE;
+        return ModSoundEvents.ENTITY_GENERIC_CHARGE2;
     }
     @Override
     public boolean hasGlint(ItemStack stack) {
         return false;
-    }
-
-    public static boolean HalfMask(ItemStack stack) {
-        return stack.getDamage() < stack.getMaxDamage() / 2;
     }
     @Override
     public EquipmentSlot getSlotType() {

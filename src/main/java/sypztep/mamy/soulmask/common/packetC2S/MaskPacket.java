@@ -27,11 +27,14 @@ public class MaskPacket {
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
             int select = buf.readInt();
             switch (select) {
-                case 1: SoulMaskUtil.checkHelmet(player);
+                case 1:
+                    SoulMaskUtil.checkHelmet(player);
                     PlayerLookup.tracking(player).forEach(foundPlayer -> AddMaskParticlePacket.send(foundPlayer, player.getId()));
                 break;
                 case 2: SoulMaskUtil.unequipMask(player);
+                    PlayerLookup.tracking(player).forEach(foundPlayer -> AddMaskParticlePacket.send(foundPlayer, player.getId()));
                 break;
+                case 3:
             }
         }
     }

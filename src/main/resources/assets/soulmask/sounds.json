@@ -1,0 +1,14 @@
+{
+  "entity.generic.charge": {
+    "sounds": [
+      "soulmask:entity/charge"
+    ],
+    "subtitle": "subtitles.soulmask.entity.generic.charge"
+  },
+  "entity.generic.charge2": {
+    "sounds": [
+      "soulmask:entity/charge2"
+    ],
+    "subtitle": "subtitles.soulmask.entity.generic.charge2"
+  }
+}

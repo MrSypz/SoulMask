@@ -21,10 +21,12 @@ public class SoulMaskModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         MaskHandleTick.init();
+
         HudRenderCallback.EVENT.register(new MaskRenderEvent());
-        ParticleFactoryRegistry particleRegistry = ParticleFactoryRegistry.getInstance();
+
         ClientPlayNetworking.registerGlobalReceiver(AddMaskParticlePacket.ID, new AddMaskParticlePacket.Receiver());
 
+        ParticleFactoryRegistry particleRegistry = ParticleFactoryRegistry.getInstance();
         particleRegistry.register(ModParticles.SHOCKWAVE, ShockwaveParticle.Factory::new);
         particleRegistry.register(ModParticles.BLOODWAVE, BloodwaveParticle.Factory::new);
     }

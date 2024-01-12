@@ -2,7 +2,6 @@ package sypztep.mamy.soulmask.client.event;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import sypztep.mamy.soulmask.client.SoulMaskModClient;
-import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
 import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
@@ -14,9 +13,13 @@ public class MaskHandleTick {
 
     public static void init () {
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
+            var player = minecraft.player;
             if (minecraft.player != null) {
                 hasEquippedMask = SoulMaskUtil.hasEquippedMask(minecraft.player);
                 if (!hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && VizardComponent.canUseMask(minecraft.player) && !VizardComponent.WasEquipMask(minecraft.player) && presscd <= 0) {
+                    if (minecraft.player.age % 5 == 0) {
+                        SoulMaskUtil.addChargeParticle(player);
+                    }
                     equipmaskcd--;
                     if (equipmaskcd <= 0) {
                         presscd = 10;
@@ -62,10 +65,6 @@ public class MaskHandleTick {
 
     public static boolean WasUnEquipMask() {
         return wasUnEquipMask;
-    }
-
-    public static boolean HasEquippedMask() {
-        return hasEquippedMask;
     }
 
     public static void setWasUnEquipMask(boolean wasUnEquipMask) {
