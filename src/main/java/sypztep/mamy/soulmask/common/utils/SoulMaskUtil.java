@@ -99,5 +99,4 @@ public class SoulMaskUtil {
         else Hollowmask = new ItemStack(ModItems.HALF_HOLLOW_MASK);
         return Hollowmask;
     }
-
 }
