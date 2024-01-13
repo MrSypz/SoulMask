@@ -13,7 +13,7 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
     private final PlayerEntity obj;
     private final int DEFAULT_DELAY = 600; // 30 Sec
     private int hogyoku = 0, delayUsemask = DEFAULT_DELAY;
-    private boolean wasEquipMask = false;
+    private boolean wasEquipMask = false,hasEquipMask = false;
 
     public VizardComponent(PlayerEntity obj) {
         this.obj = obj;
@@ -52,11 +52,19 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
     public static boolean WasEquipMask(PlayerEntity player) {
         return getVizard(player).isWasEquipMask();
     }
+    public static boolean HasEquipMask(PlayerEntity player) {
+        return getVizard(player).hasEquipMask;
+    }
     //Packet Hogyoku
     public static void incHogyoku(PlayerEntity player) {
         getVizard(player).hogyoku += 1;
         ModEntityComponents.VIZARD.sync(player);
     }
+
+    public int getHogyoku() {
+        return hogyoku;
+    }
+
     public int getDelayUsemask() {
         return delayUsemask;
     }
@@ -68,6 +76,7 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
     public void clientTick() {
         tick();
         wasEquipMask = MaskHandleTick.WasUnEquipMask();
+        hasEquipMask = MaskHandleTick.isHasEquippedMask();
         if (wasEquipMask) {
             handle(this);
             MaskEquipCDPacket.send();

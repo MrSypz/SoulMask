@@ -4,6 +4,8 @@
   "package": "sypztep.mamy.soulmask.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EnchantmentHelperMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
   ],

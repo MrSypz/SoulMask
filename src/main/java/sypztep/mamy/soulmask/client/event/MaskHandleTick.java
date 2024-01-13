@@ -76,6 +76,10 @@ public class MaskHandleTick {
         return wasUnEquipMask;
     }
 
+    public static boolean isHasEquippedMask() {
+        return hasEquippedMask;
+    }
+
     public static void setWasUnEquipMask(boolean wasUnEquipMask) {
         MaskHandleTick.wasUnEquipMask = wasUnEquipMask;
     }

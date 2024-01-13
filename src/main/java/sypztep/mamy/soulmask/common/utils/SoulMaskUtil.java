@@ -9,6 +9,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
+import sypztep.mamy.soulmask.common.init.ModEnchantments;
 import sypztep.mamy.soulmask.common.init.ModItems;
 import sypztep.mamy.soulmask.common.init.ModParticles;
 import sypztep.mamy.soulmask.common.item.HollowmaskItem;
@@ -58,8 +59,8 @@ public class SoulMaskUtil {
         }
         int getrank = VizardComponent.getHogyokuValue(user);
         ItemStack Hollowmask = getItemStack(getrank);
-            //TODO: Add Feature to take off and HOLLOW CURSE ENCHANTMENT And add cool effect like red pillar from sky
-//        Hollowmask.addEnchantment(ModEnchantments.HOLLOW_CURSE, 1);
+            //TODO: add cool effect like red pillar from sky
+        Hollowmask.addEnchantment(ModEnchantments.HOLLOW_CURSE, 1);
         user.equipStack(EquipmentSlot.HEAD, Hollowmask);
 //        user.damage(user.getWorld().getDamageSources().create(ModDamageTypes.MASKIMPACT, user), user.getHealth() * 0.5f);
 //        OrbitalEntity orbitalEntity = new OrbitalEntity(user.getWorld(),user);

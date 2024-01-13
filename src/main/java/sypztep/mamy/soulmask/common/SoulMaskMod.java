@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sypztep.mamy.soulmask.common.init.ModEnchantments;
 import sypztep.mamy.soulmask.common.init.ModItems;
 import sypztep.mamy.soulmask.common.init.ModParticles;
 import sypztep.mamy.soulmask.common.packetC2S.HogyokuPacket;
@@ -25,5 +26,6 @@ public class SoulMaskMod implements ModInitializer {
 
         ModItems.init();
         ModParticles.init();
+        ModEnchantments.register();
     }
 }
