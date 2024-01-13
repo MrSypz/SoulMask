@@ -48,6 +48,7 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
     public boolean isWasEquipMask() {
         return wasEquipMask;
     }
+
     public static boolean WasEquipMask(PlayerEntity player) {
         return getVizard(player).isWasEquipMask();
     }

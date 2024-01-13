@@ -10,9 +10,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import sypztep.mamy.soulmask.client.packetS2C.AddMaskChargeParticlePacket;
 import sypztep.mamy.soulmask.client.packetS2C.AddMaskParticlePacket;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
-import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
+import sypztep.mamy.soulmask.common.utils.SoulMaskUtil;
 
 public class MaskPacket {
     public static final Identifier ID = SoulMaskMod.id("mask");
@@ -31,10 +32,13 @@ public class MaskPacket {
                     SoulMaskUtil.checkHelmet(player);
                     PlayerLookup.tracking(player).forEach(foundPlayer -> AddMaskParticlePacket.send(foundPlayer, player.getId()));
                 break;
-                case 2: SoulMaskUtil.unequipMask(player);
+                case 2:
+                    SoulMaskUtil.unequipMask(player);
                     PlayerLookup.tracking(player).forEach(foundPlayer -> AddMaskParticlePacket.send(foundPlayer, player.getId()));
                 break;
                 case 3:
+                    PlayerLookup.tracking(player).forEach(foundPlayer -> AddMaskChargeParticlePacket.send(foundPlayer, player.getId()));
+                break;
             }
         }
     }

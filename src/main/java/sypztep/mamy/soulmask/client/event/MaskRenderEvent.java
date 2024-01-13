@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.init.ModEntityComponents;
-import sypztep.mamy.soulmask.common.util.SoulMaskUtil;
+import sypztep.mamy.soulmask.common.utils.SoulMaskUtil;
 
 public class MaskRenderEvent implements HudRenderCallback {
     private static final Identifier EQUIPMASKCD_TEXTURE = SoulMaskMod.id("textures/gui/mask.png");

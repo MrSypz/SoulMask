@@ -16,8 +16,8 @@ import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.utils.SoulMaskUtil;
 
-public class AddMaskParticlePacket {
-    public static final Identifier ID = SoulMaskMod.id("mask_particle");
+public class AddMaskChargeParticlePacket {
+    public static final Identifier ID = SoulMaskMod.id("maskcharge_particle");
     public static void send(ServerPlayerEntity player, int id) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeInt(id);
@@ -31,7 +31,7 @@ public class AddMaskParticlePacket {
             client.execute(() -> {
                 LivingEntity entity = (LivingEntity) handler.getWorld().getEntityById(id);
                 if (entity != null) {
-                    SoulMaskUtil.addUseMaskParticle((PlayerEntity) entity);
+                    SoulMaskUtil.addChargeParticle((PlayerEntity) entity);
                 }
             });
         }

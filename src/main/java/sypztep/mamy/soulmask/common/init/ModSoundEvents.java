@@ -12,7 +12,6 @@ import java.util.Map;
 public interface ModSoundEvents {
     Map<SoundEvent, Identifier> SOUND_EVENTS = new LinkedHashMap();
     //Sound
-    SoundEvent ENTITY_GENERIC_CHARGE = createSoundEvent("entity.generic.charge");
     SoundEvent ENTITY_GENERIC_CHARGE2 = createSoundEvent("entity.generic.charge2");
     static void init() {
         SOUND_EVENTS.keySet().forEach((soundEvent) -> {

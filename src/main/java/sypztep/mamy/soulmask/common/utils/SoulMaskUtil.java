@@ -1,4 +1,4 @@
-package sypztep.mamy.soulmask.common.util;
+package sypztep.mamy.soulmask.common.utils;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EquipmentSlot;
@@ -6,16 +6,17 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.init.ModItems;
 import sypztep.mamy.soulmask.common.init.ModParticles;
-import sypztep.mamy.soulmask.common.init.ModSoundEvents;
 import sypztep.mamy.soulmask.common.item.HollowmaskItem;
 
 public class SoulMaskUtil {
+    private static MinecraftClient getClient(){
+        return MinecraftClient.getInstance();
+    }
     private static ItemStack getHeadSlot(LivingEntity living) {
         return living.getEquippedStack(EquipmentSlot.HEAD);
     }
@@ -66,32 +67,19 @@ public class SoulMaskUtil {
 //            user.getWorld().spawnEntity(orbitalEntity);
     }
     public static void addUseMaskParticle(PlayerEntity player) { //Client Packet
-        if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || player != MinecraftClient.getInstance().cameraEntity)
+        if (getClient().gameRenderer.getCamera().isThirdPerson() || player != getClient().cameraEntity)
             player.getWorld().addParticle(ModParticles.BLOODWAVE, player.getX(), player.getY(), player.getZ(), 0.0, 0.0, 0.0);
     }
     public static void addChargeParticle(PlayerEntity player) { //Client Packet
-        player.getWorld().playSound(null,player.getX(),player.getY(),player.getZ(), ModSoundEvents.ENTITY_GENERIC_CHARGE, SoundCategory.PLAYERS,1,1f);
-        if (MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson() || player != MinecraftClient.getInstance().cameraEntity) {
-            MinecraftClient client = MinecraftClient.getInstance();
-            if (client.player != null) {
-                double radius = 1.0 + VizardComponent.getHogyokuValue(player);
-
-                for (int i = 0; i < 360; i += 10) { // Increase the step for a smoother rotation
-                    double angle = Math.toRadians(i);
-                    double xOffset = radius * MathHelper.cos((float) angle);
-                    double zOffset = radius * MathHelper.sin((float) angle);
-
-                    client.world.addParticle(
-                            ParticleTypes.SOUL,
-                            client.player.getX() + xOffset,
-                            client.player.getY(),
-                            client.player.getZ() + zOffset,
-                            0.0, 0.0, 0.0
-                    );
-                }
+        if (getClient().gameRenderer.getCamera().isThirdPerson() || player != getClient().cameraEntity) {
+            double radius = 1.0 + VizardComponent.getHogyokuValue(player);
+            for (int i = 0; i < 360; i += 10) { // Increase the step for a smoother rotation
+                double angle = Math.toRadians(i);
+                double xOffset = radius * MathHelper.cos((float) angle);
+                double zOffset = radius * MathHelper.sin((float) angle);
+                player.getWorld().addParticle(ParticleTypes.SOUL, player.getX() + xOffset, player.getY(), player.getZ() + zOffset, 0.0, 0.0, 0.0);
             }
         }
-//            player.getWorld().addParticle(ParticleTypes.SOUL, player.getX(), player.getY(), player.getZ(), 0.0, 0.0, 0.0);
     }
     @NotNull
     private static ItemStack getItemStack(int baseValue) {
@@ -111,4 +99,5 @@ public class SoulMaskUtil {
         else Hollowmask = new ItemStack(ModItems.HALF_HOLLOW_MASK);
         return Hollowmask;
     }
+
 }

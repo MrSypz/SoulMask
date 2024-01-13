@@ -9,6 +9,7 @@ import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 import sypztep.mamy.soulmask.client.event.MaskHandleTick;
 import sypztep.mamy.soulmask.client.event.MaskRenderEvent;
+import sypztep.mamy.soulmask.client.packetS2C.AddMaskChargeParticlePacket;
 import sypztep.mamy.soulmask.client.packetS2C.AddMaskParticlePacket;
 import sypztep.mamy.soulmask.client.particle.BloodwaveParticle;
 import sypztep.mamy.soulmask.client.particle.ShockwaveParticle;
@@ -25,6 +26,7 @@ public class SoulMaskModClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(new MaskRenderEvent());
 
         ClientPlayNetworking.registerGlobalReceiver(AddMaskParticlePacket.ID, new AddMaskParticlePacket.Receiver());
+        ClientPlayNetworking.registerGlobalReceiver(AddMaskChargeParticlePacket.ID, new AddMaskChargeParticlePacket.Receiver());
 
         ParticleFactoryRegistry particleRegistry = ParticleFactoryRegistry.getInstance();
         particleRegistry.register(ModParticles.SHOCKWAVE, ShockwaveParticle.Factory::new);
