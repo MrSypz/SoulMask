@@ -68,8 +68,16 @@ public class SoulMaskUtil {
 //            user.getWorld().spawnEntity(orbitalEntity);
     }
     public static void addUseMaskParticle(PlayerEntity player) { //Client Packet
-        if (getClient().gameRenderer.getCamera().isThirdPerson() || player != getClient().cameraEntity)
+        if (getClient().gameRenderer.getCamera().isThirdPerson() || player != getClient().cameraEntity) {
+            double radius = 1.0 + VizardComponent.getHogyokuValue(player);
+            for (int i = 0; i < 360; i += 10) { // Increase the step for a smoother rotation
+                double angle = Math.toRadians(i);
+                double xOffset = radius * MathHelper.cos((float) angle);
+                double zOffset = radius * MathHelper.sin((float) angle);
+                player.getWorld().addParticle(ParticleTypes.SOUL, player.getX() + xOffset, player.getY(), player.getZ() + zOffset, xOffset * 0.1f, 0.0f, zOffset * 0.1f);
+            }
             player.getWorld().addParticle(ModParticles.BLOODWAVE, player.getX(), player.getY(), player.getZ(), 0.0, 0.0, 0.0);
+        }
     }
     public static void addChargeParticle(PlayerEntity player) { //Client Packet
         if (getClient().gameRenderer.getCamera().isThirdPerson() || player != getClient().cameraEntity) {
