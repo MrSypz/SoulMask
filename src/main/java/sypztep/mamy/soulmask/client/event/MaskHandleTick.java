@@ -2,6 +2,7 @@ package sypztep.mamy.soulmask.client.event;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import sypztep.mamy.soulmask.client.SoulMaskModClient;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
@@ -14,25 +15,25 @@ public class MaskHandleTick {
 
     public static void init() {
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
-            if (minecraft.player != null) {
-                hasEquippedMask = SoulMaskUtil.hasEquippedMask(minecraft.player);
+            if (minecraft.player == null)
+                return;
+            hasEquippedMask = SoulMaskUtil.hasEquippedMask(minecraft.player);
 
-//                if (SoulMaskModClient.DEBUG_KEYBINDING.isPressed())
-
-                if (!hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && VizardComponent.canUseMask(minecraft.player) && !wasUnEquipMask && pressCooldown <= 0) {
-                    handleMaskEquipping(minecraft);
-                } else if (hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && pressCooldown <= 0) {
-                    handleMaskUnequipping(minecraft);
-                } else {
-                    resetCooldowns();
-                }
-                if (pressCooldown > 0)
-                    pressCooldown--;
+            if (!hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && VizardComponent.canUseMask(minecraft.player) && !wasUnEquipMask && pressCooldown <= 0) {
+                handleMaskEquipping(minecraft);
+            } else if (hasEquippedMask && SoulMaskModClient.EQUIPMASK_KEYBINDING.isPressed() && pressCooldown <= 0) {
+                handleMaskUnequipping(minecraft);
+            } else {
+                resetCooldowns();
             }
+            if (pressCooldown > 0)
+                pressCooldown--;
         });
     }
 
     private static void handleMaskEquipping(MinecraftClient minecraft) {
+        if (minecraft.player == null)
+            return;
         if (minecraft.player.age % 5 == 0) {
             SoulMaskUtil.addChargeParticle(minecraft.player);
             MaskPacket.send(3);
@@ -48,6 +49,8 @@ public class MaskHandleTick {
     }
 
     private static void handleMaskUnequipping(MinecraftClient minecraft) {
+        if (minecraft.player == null)
+            return;
         if (minecraft.player.age % 5 == 0) {
             SoulMaskUtil.addChargeParticle(minecraft.player);
             MaskPacket.send(3);
@@ -55,10 +58,22 @@ public class MaskHandleTick {
         unmaskCooldown--;
         if (unmaskCooldown <= 0) {
             pressCooldown = 10;
-            MaskPacket.send(2);
-            wasUnEquipMask = true;
-            SoulMaskUtil.addUseMaskParticle(minecraft.player);
+            handleMaskUnequippingActions(minecraft.player,0);
             unmaskCooldown = DEFAULT_COOLDOWN;
+        }
+    }
+
+    public static void handleMaskUnequippingActions(PlayerEntity player,int select) {
+        switch (select) {
+            case 0 :
+                MaskPacket.send(2);
+                wasUnEquipMask = true;
+                SoulMaskUtil.addUseMaskParticle(player);
+                break;
+            case 1 :
+                MaskPacket.send(2);
+                wasUnEquipMask = true;
+                break;
         }
     }
 
