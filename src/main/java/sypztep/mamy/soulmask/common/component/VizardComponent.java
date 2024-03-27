@@ -11,8 +11,8 @@ import sypztep.mamy.soulmask.common.packetC2S.MaskEquipCDPacket;
 public class VizardComponent implements AutoSyncedComponent, CommonTickingComponent {
     private final PlayerEntity obj;
     private final int DEFAULT_DELAY = 600; // 30 Sec
-    private int hogyoku = 0, delayUsemask = DEFAULT_DELAY;
-    private boolean wasUnEquipMask = false,hasEquipMask = false;
+    private int hogyoku = 0, delayUsemask = DEFAULT_DELAY, energy = 100;
+    private boolean wasUnEquipMask = false, hasEquipMask = false ,unequipHandled = false;
 
     public VizardComponent(PlayerEntity obj) {
         this.obj = obj;
@@ -21,12 +21,14 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
     public void readFromNbt(NbtCompound tag) {
         this.hogyoku = tag.getInt("hogyoku");
         this.delayUsemask = tag.getInt("delayusemask");
+        this.energy = tag.getInt("energy");
     }
 
     @Override
     public void writeToNbt(NbtCompound tag) {
         tag.putInt("hogyoku",this.hogyoku);
         tag.putInt("delayusemask",this.delayUsemask);
+        tag.putInt("energy",this.energy);
     }
     /**
      this method is just simpify to use aka short from
@@ -65,14 +67,29 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
         tick();
         wasUnEquipMask = MaskHandleTick.WasUnEquipMask();
         hasEquipMask = MaskHandleTick.isHasEquippedMask();
+        if (energy == 0 && !unequipHandled) {
+            MaskHandleTick.handleMaskUnequippingActions(obj, 1);
+            unequipHandled = true;
+        }
         if (wasUnEquipMask) {
             handle(this);
             MaskEquipCDPacket.send();
-        } else delayUsemask = DEFAULT_DELAY;
+        } else {
+            delayUsemask = DEFAULT_DELAY - energy - (80 * hogyoku);
+            unequipHandled = false;
+        }
     }
     @Override
     public void tick() {
+        if (hasEquipMask) {
+            if (obj.age % (5 + 2 * hogyoku) == 0 && energy > 0)
+                energy--;
+        } else {
+            if (energy < 100 && obj.age % (20 - 3 * hogyoku) == 0)
+                energy++;
+        }
     }
+
     public void handle(VizardComponent component) {
         if (component.delayUsemask > 0) {
             component.delayUsemask--;
