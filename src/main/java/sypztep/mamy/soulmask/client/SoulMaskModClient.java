@@ -18,6 +18,7 @@ import sypztep.mamy.soulmask.common.init.ModParticles;
 
 public class SoulMaskModClient implements ClientModInitializer {
     public static final KeyBinding EQUIPMASK_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + SoulMaskMod.MODID + ".equipmask", GLFW.GLFW_KEY_V, "key.categories." + SoulMaskMod.MODID));
+    public static final KeyBinding DEBUG_KEYBINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + SoulMaskMod.MODID + ".debug", GLFW.GLFW_KEY_Z, "key.categories." + SoulMaskMod.MODID));
 
     @Override
     public void onInitializeClient() {
