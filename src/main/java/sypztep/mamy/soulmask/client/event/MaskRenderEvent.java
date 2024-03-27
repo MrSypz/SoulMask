@@ -16,33 +16,37 @@ public class MaskRenderEvent implements HudRenderCallback {
     private static final Identifier MASKCD_TEXTURE = SoulMaskMod.id("textures/gui/cd.png");
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
-        ModEntityComponents.VIZARD.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(vizardComponent -> {
-            if (VizardComponent.canUseMask(MinecraftClient.getInstance().player)){
-//                drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, String.valueOf(VizardComponent.getEnergy(MinecraftClient.getInstance().player)),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18,25565,0,true);
-                if (MaskHandleTick.getEquipmaskcd() < 20) {
-                    RenderSystem.enableBlend();
-                    drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 5, 32, 5, 32, 10);
-                    if (MaskHandleTick.getEquipmaskcd() < MaskHandleTick.getLastequipcd())
-                        drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (33-(MaskHandleTick.getEquipmaskcd() / (float) MaskHandleTick.getLastequipcd()) * 32), 5, 32, 10);
-                    RenderSystem.disableBlend();
-                } else
-                if (SoulMaskUtil.hasEquippedMask(MinecraftClient.getInstance().player) && MaskHandleTick.getUnmaskCooldown() < 20) {
-                    RenderSystem.enableBlend();
-                    drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 5, 32, 5, 32, 10);
-                    if (MaskHandleTick.getUnmaskCooldown() < MaskHandleTick.getLastunmaskcd())
-                        drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (33-(MaskHandleTick.getUnmaskCooldown() / (float) MaskHandleTick.getLastunmaskcd()) * 32), 5, 32, 10);
-                    RenderSystem.disableBlend();
-                }
+        MinecraftClient minecraft = MinecraftClient.getInstance();
+        ModEntityComponents.VIZARD.maybeGet(minecraft.cameraEntity).ifPresent(vizardComponent -> {
+            int windowWidth = drawContext.getScaledWindowWidth();
+            int windowHeight = drawContext.getScaledWindowHeight();
+            if (VizardComponent.canUseMask(minecraft.player)) {
+
+                if (MaskHandleTick.getEquipmaskcd() < 20)
+                    renderCooldownBar(drawContext, windowWidth / 2 - 16, windowHeight / 2 + 18, MaskHandleTick.getEquipmaskcd(), MaskHandleTick.getLastequipcd());
+                 else if (SoulMaskUtil.hasEquippedMask(minecraft.player) && MaskHandleTick.getUnmaskCooldown() < 20)
+                    renderCooldownBar(drawContext, windowWidth / 2 - 16, windowHeight / 2 + 18, MaskHandleTick.getUnmaskCooldown(), MaskHandleTick.getLastunmaskcd());
+
             }
+
             if (vizardComponent.isWasUnEquipMask()) {
                 RenderSystem.enableBlend();
-                drawContext.drawTexture(MASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 9F) - 25, (int) (drawContext.getScaledWindowHeight() / 2F) + 80, 0, 0, 18, 18, 18, 36);
+                drawContext.drawTexture(MASKCD_TEXTURE, windowWidth / 9 - 25, windowHeight / 2 + 80, 0, 0, 18, 18, 18, 36);
                 if (vizardComponent.getDelayUsemask() < vizardComponent.getLastDelayUsemask())
-                    drawContext.drawTexture(MASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 9F) - 25, (int) (drawContext.getScaledWindowHeight() / 2F) + 80, 0, 18, 18, (int) (19-(vizardComponent.getDelayUsemask() / (float) vizardComponent.getLastDelayUsemask()) * 18), 18, 36);
+                    drawContext.drawTexture(MASKCD_TEXTURE, windowWidth / 9 - 25, windowHeight / 2 + 80, 0, 18, 18, (int) (19 - (vizardComponent.getDelayUsemask() / (float) vizardComponent.getLastDelayUsemask()) * 18), 18, 36);
                 RenderSystem.disableBlend();
             }
         });
     }
+
+    private void renderCooldownBar(DrawContext drawContext, int x, int y, int currentCooldown, int lastCooldown) {
+        RenderSystem.enableBlend();
+        drawContext.drawTexture(MaskRenderEvent.EQUIPMASKCD_TEXTURE, x, y, 0, 5, 32, 5, 32, 10);
+        if (currentCooldown < lastCooldown)
+            drawContext.drawTexture(MaskRenderEvent.EQUIPMASKCD_TEXTURE, x, y, 0, 0, (int) (33 - (currentCooldown / (float) lastCooldown) * 32), 5, 32, 10);
+        RenderSystem.disableBlend();
+    }
+
     public static void drawtextcustom(DrawContext context, TextRenderer textRenderer,String text,int x,int y ,int color,int board, boolean shadow){
         context.drawText(textRenderer,text,x + 1,y,board,shadow);
         context.drawText(textRenderer,text,x - 1,y,board,shadow);
