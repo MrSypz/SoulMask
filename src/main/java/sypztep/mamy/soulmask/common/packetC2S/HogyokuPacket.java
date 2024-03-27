@@ -11,6 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
 import sypztep.mamy.soulmask.common.component.VizardComponent;
+import sypztep.mamy.soulmask.common.init.ModEntityComponents;
 
 public class HogyokuPacket {
     public static final Identifier ID = SoulMaskMod.id("hogyoku");
@@ -22,7 +23,8 @@ public class HogyokuPacket {
     public static class Receiver implements ServerPlayNetworking.PlayChannelHandler {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-            VizardComponent.incHogyoku(player);
+            VizardComponent component = ModEntityComponents.VIZARD.get(player);
+            component.incHogyoku();
         }
     }
 }
