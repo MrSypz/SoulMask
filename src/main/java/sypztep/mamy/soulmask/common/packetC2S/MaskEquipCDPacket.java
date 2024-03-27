@@ -10,7 +10,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import sypztep.mamy.soulmask.common.SoulMaskMod;
-import sypztep.mamy.soulmask.common.component.VizardComponent;
 import sypztep.mamy.soulmask.common.init.ModEntityComponents;
 
 public class MaskEquipCDPacket {
@@ -23,8 +22,8 @@ public class MaskEquipCDPacket {
         @Override
         public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
             server.execute(() -> ModEntityComponents.VIZARD.maybeGet(player).ifPresent(vizardComponent -> {
-                if (vizardComponent.isWasEquipMask())
-                    VizardComponent.handle(vizardComponent);
+                if (vizardComponent.isWasUnEquipMask())
+                    vizardComponent.handle(vizardComponent);
             }));
         }
     }
