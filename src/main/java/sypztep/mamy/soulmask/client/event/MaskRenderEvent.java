@@ -18,6 +18,7 @@ public class MaskRenderEvent implements HudRenderCallback {
     public void onHudRender(DrawContext drawContext, float tickDelta) {
         ModEntityComponents.VIZARD.maybeGet(MinecraftClient.getInstance().cameraEntity).ifPresent(vizardComponent -> {
             if (VizardComponent.canUseMask(MinecraftClient.getInstance().player)){
+//                drawtextcustom(drawContext,MinecraftClient.getInstance().textRenderer, String.valueOf(VizardComponent.getEnergy(MinecraftClient.getInstance().player)),(int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18,25565,0,true);
                 if (MaskHandleTick.getEquipmaskcd() < 20) {
                     RenderSystem.enableBlend();
                     drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 5, 32, 5, 32, 10);
@@ -25,15 +26,15 @@ public class MaskRenderEvent implements HudRenderCallback {
                         drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (33-(MaskHandleTick.getEquipmaskcd() / (float) MaskHandleTick.getLastequipcd()) * 32), 5, 32, 10);
                     RenderSystem.disableBlend();
                 } else
-                if (SoulMaskUtil.hasEquippedMask(MinecraftClient.getInstance().player) && MaskHandleTick.getUnmaskcd() < 20) {
+                if (SoulMaskUtil.hasEquippedMask(MinecraftClient.getInstance().player) && MaskHandleTick.getUnmaskCooldown() < 20) {
                     RenderSystem.enableBlend();
                     drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 5, 32, 5, 32, 10);
-                    if (MaskHandleTick.getUnmaskcd() < MaskHandleTick.getLastunmaskcd())
-                        drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (33-(MaskHandleTick.getUnmaskcd() / (float) MaskHandleTick.getLastunmaskcd()) * 32), 5, 32, 10);
+                    if (MaskHandleTick.getUnmaskCooldown() < MaskHandleTick.getLastunmaskcd())
+                        drawContext.drawTexture(EQUIPMASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 2F) - 16, (int) (drawContext.getScaledWindowHeight() / 2F) + 18, 0, 0, (int) (33-(MaskHandleTick.getUnmaskCooldown() / (float) MaskHandleTick.getLastunmaskcd()) * 32), 5, 32, 10);
                     RenderSystem.disableBlend();
                 }
             }
-            if (vizardComponent.isWasEquipMask()) {
+            if (vizardComponent.isWasUnEquipMask()) {
                 RenderSystem.enableBlend();
                 drawContext.drawTexture(MASKCD_TEXTURE, (int) (drawContext.getScaledWindowWidth() / 9F) - 25, (int) (drawContext.getScaledWindowHeight() / 2F) + 80, 0, 0, 18, 18, 18, 36);
                 if (vizardComponent.getDelayUsemask() < vizardComponent.getLastDelayUsemask())
