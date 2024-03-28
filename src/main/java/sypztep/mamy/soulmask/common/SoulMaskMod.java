@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import sypztep.mamy.soulmask.common.init.ModEnchantments;
 import sypztep.mamy.soulmask.common.init.ModItems;
 import sypztep.mamy.soulmask.common.init.ModParticles;
+import sypztep.mamy.soulmask.common.init.ModStatusEffects;
 import sypztep.mamy.soulmask.common.packetC2S.HogyokuPacket;
 import sypztep.mamy.soulmask.common.packetC2S.MaskEquipCDPacket;
 import sypztep.mamy.soulmask.common.packetC2S.MaskPacket;
@@ -26,6 +27,7 @@ public class SoulMaskMod implements ModInitializer {
 
         ModItems.init();
         ModParticles.init();
-        ModEnchantments.register();
+        ModEnchantments.init();
+        ModStatusEffects.init();
     }
 }
