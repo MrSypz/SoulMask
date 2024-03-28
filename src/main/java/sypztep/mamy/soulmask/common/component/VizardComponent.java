@@ -30,9 +30,6 @@ public class VizardComponent implements AutoSyncedComponent, CommonTickingCompon
         tag.putInt("delayusemask",this.delayUsemask);
         tag.putInt("energy",this.energy);
     }
-    /**
-     this method is just simpify to use aka short from
-     */
     private static VizardComponent getVizard(PlayerEntity player) {
         return ModEntityComponents.VIZARD.get(player);
     }
