@@ -1,0 +1,15 @@
+{
+  "item.soulmask.half_hollow_mask" : "Half Hollow Mask",
+  "item.soulmask.hollow_mask_1" : "Hollow Mask Tier 1",
+  "item.soulmask.hollow_mask_2" : "Hollow Mask Tier 2",
+  "item.soulmask.hollow_mask_3" : "Hollow Mask Tier 3",
+  "item.soulmask.hollow_mask_4" : "Hollow Mask Tier 4",
+  "item.soulmask.vasto_mask" : "Vastolord Mask",
+  "item.soulmask.hogyoku" : "Hogyoku",
+  "item.soulmask.hogyoku.desc" : "unidentified object that from nowhere, but your soul are calling it. - Consume ",
+
+  "soulmask.hogyoku.limit_reached": "Hogyoku has reached the limit.",
+  "soulmask.hogyoku.success": "Vizored level increase",
+
+  "effect.soulmask.hollowpower": "Hollow Power"
+}
